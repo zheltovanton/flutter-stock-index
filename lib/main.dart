@@ -9,8 +9,6 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'includes/strings.dart' as s;
 import 'includes/globals.dart' as g;
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'component/rest.dart';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';

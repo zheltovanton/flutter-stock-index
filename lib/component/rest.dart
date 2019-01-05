@@ -119,11 +119,15 @@ class RestHelperGET {
     var client = new http.Client();
     var req= http.Request('GET', Uri.parse(url));
 
-    req.bodyFields = obj.toMap();
+    if (obj!=null){
+      req.bodyFields = obj.toMap();
+    }
+
     await client.send(req).then((response)
     => response.stream.bytesToString().then((value)
     => ret=value.toString())).catchError((error) => print(error.toString()));
 
+    print(ret);
 //     new Future.delayed(Duration.zero,() {
 //       showDialog(context: context, builder: (context) => new AlertDialog(
 //         title: new Text("rest response"),

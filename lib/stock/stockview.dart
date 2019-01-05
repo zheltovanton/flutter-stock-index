@@ -110,13 +110,15 @@ class _StockViewState extends State<StockView> with WidgetsBindingObserver {
     var restHelper = new RestHelperGET();
     String lResp = await restHelper.post(g.URL_SERVER+g.URL_API, null, context);
 
+    print(lResp);
+
     var ret = json.decode(lResp);
 
     //print(ret["data"].toString());
     if (ret!=null) {
       _data = new List<StockModal>();
       for (var i in ret) {
-        //print(i["photo"]);
+        print(i.toString());
         _data.add(new StockModal.fromFields(i));
       }
     }
