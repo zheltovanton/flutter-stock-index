@@ -31,79 +31,11 @@ class ExitButton extends StatelessWidget {
   }
 }
 
-
-Widget StockViewWidget (BuildContext context, List<StockModal> StockView)
-{
-  ScrollController _scrollController = new ScrollController();
-
-  if (StockView != null) {
-    if (StockView.length > 0) {
-      return new SingleChildScrollView(
-          reverse: true,
-          //key: _scaffoldKey,
-          child:new Container(
-            padding: const EdgeInsets.all(4.0),
-            child: new Column(
-              children: <Widget>[
-              ]
-                ..addAll(buildTab(context, StockView)),
-            ),
-          )
-      );
-    } else {
-      return new UIElementEmpty();
-    }
-  } else {
-    return new UIElementEmpty();
-  }
-}
-
-class StockView extends StatefulWidget {
-  StockView({  this.context });
-
-  BuildContext context;
-  String number;
-
-  @override
-  createState() =>
-      new _StockViewState( context: context);
-}
-
-class _StockViewState extends State<StockView> with WidgetsBindingObserver {
-  _StockViewState({  this.context });
-  BuildContext context;
+Widget StockView (BuildContext context){
 
   final GlobalKey<AsyncLoaderState> _asyncLoaderState =
   new GlobalKey<AsyncLoaderState>();
   AppLifecycleState _lastLifecycleState;
-
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    setState(() {
-      print("new _lastLifecycleState " +_lastLifecycleState.toString());
-      _lastLifecycleState = state;
-      _handleRefresh;
-    });
-  }
-
-
-  Future<Null> _handleRefresh() async {
-    _asyncLoaderState.currentState.reloadState();
-    return null;
-  }
 
   _getStock(BuildContext context) async{
     List<StockModal> _data;
@@ -126,22 +58,21 @@ class _StockViewState extends State<StockView> with WidgetsBindingObserver {
     return _data;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    var _asyncLoader = new AsyncLoader(
-        key: _asyncLoaderState,
-        initState: () async => await _getStock(context),
-        renderLoad: () => new UIElementLoading(),
-        renderError: ([error]) =>  new Text(s.txtErrorLoading),
-        renderSuccess: ({data}) =>  StockViewWidget(context, data)
 
-    );
+  var _asyncLoader = new AsyncLoader(
+      key: _asyncLoaderState,
+      initState: () async => await _getStock(context),
+      renderLoad: () => new UIElementLoading(),
+      renderError: ([error]) =>  new Text(s.txtErrorLoading),
+      renderSuccess: ({data}) =>  buildTab(context, data)
 
-    return _asyncLoader;
-  }
+  );
+
+  return _asyncLoader;
+
 }
 
-List<Widget> buildTab(BuildContext context,
+Widget buildTab(BuildContext context,
     List<StockModal> StockView) {
   List<Widget> _data;
 
@@ -151,7 +82,16 @@ List<Widget> buildTab(BuildContext context,
 
     _data.add(StockViewItem(context:context, i:i));
   }
-  return _data;
+  return new Padding(
+      padding: const EdgeInsets.only(top: 1.0),
+      child: new GridView.extent(
+        maxCrossAxisExtent: 150.0,
+        children: _data,
+        mainAxisSpacing: 2.0,
+        crossAxisSpacing:2.0,
+        padding: const EdgeInsets.all(1.0),
+      )
+  );
 }
 
 class StockViewItem extends StatelessWidget {
@@ -170,7 +110,6 @@ class StockViewItem extends StatelessWidget {
     final List<Widget> rowChildren = <Widget>[
       new Expanded(
           child: new Container(
-              width: 300.0,
               margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
               padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
               child: new Column(

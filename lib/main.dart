@@ -59,9 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
       //key: _scaffoldKey,
 //        drawer: _buildDrawer(context),
       //      appBar: buildAppBar(context),
-        body: new Container(
-            child: StockView(context: context,)
-        )
+        body:  StockView(context)
     )
 
     );
