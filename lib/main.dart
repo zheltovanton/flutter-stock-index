@@ -1,6 +1,28 @@
 import 'package:flutter/material.dart';
+import 'login/login.dart';
+import 'login/auth.dart';
+import 'chat/chat_sender.dart';
+import 'chat/chat.dart';
+import 'stock/stockview.dart';
+import 'package:flutter/services.dart';
+import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'includes/strings.dart' as s;
+import 'includes/globals.dart' as g;
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'component/rest.dart';
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
+import 'dart:io';
+import 'component/tools.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
-void main() => runApp(MyApp());
+AuthService appAuth = new AuthService();
+
+void main() async{
+  runApp(new MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -10,7 +32,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Flutter'),
     );
   }
 }
@@ -32,31 +54,41 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Widget MainBuilder(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+    return (new Scaffold(
+      // Appbar
+      //key: _scaffoldKey,
+//        drawer: _buildDrawer(context),
+      //      appBar: buildAppBar(context),
+        body: new Container(
+            child: StockView(context: context,)
+        )
+    )
+
+    );
+  }
+
+  ThemeData get theme {
+    return new ThemeData(
+        brightness: Brightness.light,
+        primarySwatch: g.clMatBack
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    return new MaterialApp(
+      title: 'Tasks',
+      theme: theme,
+      routes: <String, WidgetBuilder>{
+        '/': (BuildContext context) => MainBuilder(context),
+        '/home': (BuildContext context) => MainBuilder(context),
+//        '/login': (BuildContext context) => LoginPage(context),
+//        '/settings': (BuildContext context) => null,
+      },
+//      onGenerateRoute: (RouteSettings settings) =>_getRoute(context, settings),
+//      onUnknownRoute: (RouteSettings settings) =>_getRoute(context, settings),
     );
   }
 }

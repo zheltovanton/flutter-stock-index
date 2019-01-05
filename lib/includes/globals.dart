@@ -7,11 +7,9 @@ import 'package:flutter/material.dart';
 
 String API_KEY = "tetetetet";
 
-String URL_SERVER = "https://xdev.team/";
+String URL_SERVER = "https://xdev.team/stock/";
 String URL_REGISTER = "login.php";
-
-String Google_Maps_Key = "sasas";
-String Google_Server_Key = "asasa";
+String URL_API = "api.php";
 
 String phonePrefix = "7";
 
@@ -41,8 +39,8 @@ const List<Color> coolColors = const <Color>[
 
 
 const Color clBack = Color(0xFF272a29);
-const Color clDefault = Color(0xFFdb992f);
-const Color clDefaultLight = Color(0xFFdeceb3);
+const Color clDefault = Color(0xFF13492f);
+const Color clDefaultLight = Color(0xFFF3F0Ff);
 const Color clTextDefault = Color(0xFF4d4d4d);
 const Color clDisabled = Color(0xFFe5e5e5);
 MaterialColor clMatBack = const MaterialColor(0xFF272a29,
